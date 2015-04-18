@@ -26,8 +26,9 @@ We load and preprocess the data making it suitable for analysis. The data comes 
 library(data.table)
 library(graphics)
 library(grDevices)
+library(lattice)
 library(plyr)
-library(ggplot2)
+
 
 rawData <- read.csv("activity.csv", na.strings=NA)
 naOmittedData <- na.omit(rawData)
@@ -79,7 +80,7 @@ Since we eliminated rows with missing values in our earlier analysis, we will tr
 We will use the mean values from the matching intervals in the above meanData set to replace the NAs in the rawData set.
 
 ```{r echo=TRUE}
-filleddata <- data.frame(interval=data$interval, steps=ifelse(is.na(rawData$steps),meanData[match(meanData$interval, rawData$interval), 2], rawData$steps),date=rawData$date)
+filleddata <- data.frame(interval=rawData$interval, steps=ifelse(is.na(rawData$steps),meanData[match(meanData$interval, rawData$interval), 2], rawData$steps),date=rawData$date)
 ```
 
 ##Plot the new summary data with NAs replaced by mean for the interval. 
@@ -98,14 +99,14 @@ and the new median is `r median(newSummaryData$mSum)` which happen to be equal.
 
 
 ## Are there differences in activity patterns between weekdays and weekends? 
-The following graph indicates that there are more steps during weekdays as indicated by the red trend line towards evenings, and then there is similar pattern during the rest of the intervals.  
+The following 2 panel graphs indicate that there are more steps during weekends during morning, but apart from that the activity patterns are similar during the rest of the intervals.  
 
 ```{r echo=TRUE}
 
 days <- weekdays(as.Date(filleddata$date)) %in% c('Saturday','Sunday')
 filleddata$weekday <- factor(days, labels = c("weekday", "weekend"))
 avfilledData <- ddply(filleddata, .(interval,weekday), summarize, mMean=mean(steps))
-qplot(interval,mMean, data=avfilledData, color=weekday, geom=c("point","smooth"))
+xyplot(mMean~interval|weekday, data=avfilledData, lty=1,type="l", layout=c(1,2))
 
 ```
 
