@@ -1,9 +1,9 @@
--# Reproducible Research: Peer Assessment 1
-+---
+# Reproducible Research: Peer Assessment 1
++
 +title: "Reproducible Research: Peer Assessment 1"
 +output:  html_document:
    keep_md: true
-+---
+
 =====================================================
 
 
@@ -29,7 +29,7 @@ library(graphics)
 library(grDevices)
 library(lattice)
 library(plyr)
-library(ggplot2)
+
 
 rawData <- read.csv("activity.csv", na.strings=NA)
 naOmittedData <- na.omit(rawData)
@@ -115,7 +115,7 @@ and the new median is 1.0766189 &times; 10<sup>4</sup> which happen to be equal.
 
 
 ## Are there differences in activity patterns between weekdays and weekends? 
-The following graph indicates that there are more steps during weekdays as indicated by the red trend line towards evenings, and then there is similar pattern during the rest of the intervals.  
+The following 2 panel graphs indicate that there are more steps during weekends during morning, but apart from that the activity patterns are similar during the rest of the intervals.  
 
 
 ```r
